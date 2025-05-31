@@ -1,0 +1,26 @@
+<h1><%=title%></h1>
+<form id="emailForm" action="/users/send-verification-email/<%=email%>">   
+    <!-- submiting this form will send verification email again but code to call mailer is not written here in script tag cause this page is on client side -->
+    <input id="emailInput" value= <%=email%> />
+    <input type="submit" value="Send" />
+</form>
+
+
+<script>
+    // writing this script to make input length equal to length of email
+    // Get the email input element
+    const emailInput = document.getElementById('emailInput');
+
+    // Calculate the size based on the email value length
+    const emailValue = emailInput.value;
+    emailInput.size = emailValue.length;
+
+    // Optionally, you can add an event listener to adjust the size dynamically as the user types
+    emailInput.addEventListener('input', () => {
+        emailInput.size = emailInput.value.length;
+    });
+
+</script>
+
+
+

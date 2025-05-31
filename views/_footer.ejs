@@ -1,0 +1,20 @@
+<footer id="layout-footer" class="bg-dark text-light py-3" style="margin-top: 1rem;">
+    <div class="container text-center">
+        <p class="mb-2">
+            &#169; ConnectDots - A Social Media Website. All Rights Reserved
+        </p>
+
+        <nav class="footer-nav">
+            <ul class="list-inline mb-0">
+                <li class="list-inline-item">
+                    <a href="/" class="footer-link">Home</a>
+                </li>
+                <li class="list-inline-item">
+                    <% if(typeof user !== 'undefined' && user){%>
+                        <a href="/users/profile/<%=user.id%>" class="footer-link">Profile</a>
+                    <%}%>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</footer>

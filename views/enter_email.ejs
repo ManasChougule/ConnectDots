@@ -1,0 +1,27 @@
+<h1 class="text-center mt-4 mb-3">Confirm Email</h1>
+
+<p class="text-muted text-center mb-4">
+  Enter your user account's verified email address and we will send you a password reset link.
+</p>
+
+<div class="d-flex justify-content-center">
+  <form action="/users/verify-email" method="POST" class="w-100" style="max-width: 400px;">
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input 
+        type="email" 
+        name="email" 
+        id="email" 
+        class="form-control" 
+        placeholder="Enter Email" 
+        required
+      >
+    </div>
+
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary">
+        Send Password Reset Email
+      </button>
+    </div>
+  </form>
+</div>

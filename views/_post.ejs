@@ -1,0 +1,161 @@
+<li id="post-<%= post._id %>" class="post-wrapper">
+
+  <!-- ─── Post Content ─────────────────────────────────────────── -->
+  <div class="post d-flex flex-column gap-1">
+
+    <!-- Delete button (if owner / admin) -->
+    <% if (
+        locals.user &&
+        (locals.user.email === 'manaschougule2019@gmail.com' ||
+        locals.user.id === post.user.id)
+    ) { %>
+
+    <a href="/posts/destroy/<%= post.id %>"
+        class="delete-post-button align-self-end">
+        <i class="bi bi-trash-fill"></i>
+    </a>
+
+    <% } %>
+
+    <% if (post.imageUrl) { %>
+        <div class="imageDiv text-center my-3">
+            <img src="<%= post.imageUrl %>" alt="Post image"
+                class="img-fluid rounded shadow-sm"
+                style="max-width: 100%; max-height: 400px; width: auto; height: auto; object-fit: contain;" />
+        </div>
+    <% } %>
+
+    <p class="mb-1 mt-2 post-content"><%= post.content %></p>
+
+    <div class="d-flex flex-wrap gap-3 small text-muted">
+      <span>Author:&nbsp;<strong><%= post.user.name %></strong></span>
+
+            <% if (locals.user) { %>
+            <a class="toggle-like-button like-button <%= post.likes.length === 0 ? 'text-black-50' : '' %>"
+                data-likes="<%= post.likes.length %>"
+                href="/likes/toggle/?id=<%= post._id %>&type=Post"
+                data-liked="<%= post.likes.some(like => like.user.toString() === locals.user.id) %>">
+                <i class="bi bi-heart-fill"></i>
+                <span><%= post.likes.length %></span>
+            </a>
+            <% } else { %>
+            <span class="toggle-like-button like-button <%= post.likes.length === 0 ? 'text-black-50' : '' %>">
+                <i class="bi bi-heart-fill"></i>
+                <span><%= post.likes.length %></span>
+            </span>
+        <% } %>
+
+    </div>
+  </div>
+
+  <!-- ─── Comments ──────────────────────────────────────────────── -->
+  <div class="post-comments">
+    <% if (locals.user) { %>
+      <form id="post-<%= post._id %>-comments-form" class="d-flex gap-2 mb-3" action="/comments/create" method="POST" onsubmit="return validateCommentForm()">
+        <input type="text" id="commentInput" name="content" class="form-control" placeholder="Type a comment..." required>
+        <input type="hidden" name="post" value="<%= post._id %>">
+        <div class="comment-footer">
+            <button type="submit" class="btn btn-sm btn-primary">Add Comment</button>
+            <span class="comment-hint">Max 80 characters</span>
+        </div>
+      </form>
+      
+      <script>
+        function validateCommentForm () {
+          const c = document.getElementById('commentInput');
+          if (c.value.length > 80) {
+            alert('Comment length should be ≤ 80 characters.');
+            c.value = '';
+            return false;
+          }
+          return true;
+        }
+      </script>
+    <% } %>
+
+    <!-- Comments list -->
+    <div >           <!-- NEW wrapper -->
+    <ul id="post-comments-<%= post._id %>" class="list-unstyled mb-0">
+        <% for (comment of post.comments) { %>
+        <%- include('_comment') -%>
+        <% } %>
+
+        <% if (locals.user && post.comments.length >= 5) { %>
+        <li class="text-center">
+            <button 
+            class="show-more-comments btn btn-outline-primary btn-sm mt-3 px-3 shadow-sm rounded-pill fw-semibold"
+            data-post-id="<%= post._id %>" 
+            data-skip="5"
+            >
+            <i class="bi bi-chat-dots me-1"></i> Show More Comments
+            </button>
+        </li>
+        <% } %>
+
+
+    </ul>
+    </div>                             
+    <!-- /scrollable-comments -->
+    <script>
+        window.currentUser = {
+            id: "<%= typeof user !== 'undefined' && user ? user._id : '' %>",
+            loggedIn: <%= typeof user !== 'undefined' && user ? 'true' : 'false' %>
+        };
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.show-more-comments').forEach(btn => {
+            if (btn.dataset.listener) return;
+            btn.dataset.listener = 'true';
+            btn.addEventListener('click', async () => {
+                const postId = btn.dataset.postId;
+                let skip = +btn.dataset.skip;
+                try {
+                const res = await fetch(`/comments/fetchNext15Comments/${postId}?skip=${skip}&limit=5`);
+                const { comments, hasMore } = await res.json();
+                if (comments.length) {
+                    comments.forEach(c => {
+                        const html = `
+                        <li class="comment border rounded px-3 py-2 mb-2 shadow-sm position-relative" id="comment-${c._id}">
+                            ${window.currentUser.loggedIn && (window.currentUser.email === 'manaschougule2019@gmail.com' || window.currentUser.id == c.user._id)
+                            ? `<a href="/comments/destroy/${c._id}" class="delete-comment-button position-absolute top-0 end-0 mt-1 me-2">
+                                <i class="bi bi-trash-fill"></i>
+                                </a>`
+                            : ''}
+
+                            <p class="mb-1">${c.content}</p>
+
+                            <div class="small text-muted fst-italic ps-3 pb-4">
+                            — ${c.user.name}
+                            </div>
+
+                            ${window.currentUser.loggedIn
+                            ? `<a class="toggle-like-button like-button ${c.likes.length === 0 ? 'text-black-50' : ''} position-absolute bottom-0 start-0 ps-3 pb-1 d-flex align-items-center"
+                                    data-likes="${c.likes.length}"
+                                    href="/likes/toggle/?id=${c._id}&type=Comment">
+                                <i class="bi bi-heart-fill me-1"></i>
+                                <span>${c.likes.length}</span>
+                                </a>`
+                            : `<div class="toggle-like-button like-button ${c.likes.length === 0 ? 'text-black-50' : ''} position-absolute bottom-0 start-0 ps-3 pb-1 d-flex align-items-center">
+                                <i class="bi bi-heart-fill me-1"></i>
+                                <span>${c.likes.length}</span>
+                                </div>`}
+                        </li>`;
+
+                        // deleteComment($('.delete-comment-button', html));
+                        // new ToggleLike($(' .toggle-like-button') , html);
+
+                        btn.insertAdjacentHTML('beforebegin', html);
+                    });
+
+                    btn.dataset.skip = skip + 5;
+                    if (comments.length < 5 || !hasMore) btn.remove();
+
+                } else { btn.remove(); }
+                } catch (err) { console.error(err); }
+            });
+            });
+        });
+    </script>
+
+  </div>
+
+</li>

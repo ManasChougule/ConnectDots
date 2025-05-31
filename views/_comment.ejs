@@ -1,0 +1,30 @@
+<li id ="comment-<%= comment._id %>" class="comment border rounded px-3 py-2 mb-2 shadow-sm position-relative">
+
+  <% if (locals.user) { %>
+    <a class="toggle-like-button like-button <%= comment.likes.length === 0 ? 'text-black-50' : '' %>  position-absolute bottom-0 start-0 ps-3 pb-1 d-flex align-items-center"
+       data-likes="<%= comment.likes.length %>"
+       href="/likes/toggle/?id=<%= comment._id %>&type=Comment"
+       >
+      <i class="bi bi-heart-fill me-1"></i>
+      <span><%= comment.likes.length %></span>
+    </a>
+  <% } else { %>
+    <div class="toggle-like-button like-button <%= comment.likes.length === 0 ? 'text-black-50' : '' %>  position-absolute bottom-0 start-0 ps-3 pb-1 d-flex align-items-center">
+      <i class="bi bi-heart-fill me-1"></i>
+      <span><%= comment.likes.length %></span>
+    </div>
+  <% } %>
+
+  <% if (locals.user && (locals.user.email === 'manaschougule2019@gmail.com' || locals.user.id === comment.user.id)) { %>
+    <a href="/comments/destroy/<%= comment.id %>" class="delete-comment-button position-absolute top-0 end-0 mt-1 me-2">
+      <i class="bi bi-trash-fill"></i>
+    </a>
+  <% } %>
+
+  <p class="mb-1"><%= comment.content %></p>
+
+  <div class="small text-muted fst-italic" style="padding-left: 1rem; padding-bottom: 1.5rem;">
+    — <%= comment.user.name %>
+  </div>
+
+</li>

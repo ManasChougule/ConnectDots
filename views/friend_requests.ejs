@@ -1,0 +1,63 @@
+<% if (locals.user) { %>
+    <h1 class="text-center text-primary fw-bold mb-4"><%= title %></h1>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="card shadow-sm border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="fs-5 mb-0">Friend Requests Received (<%= total_friend_requests_received %>)</h2>
+                    </div>
+                    <div class="card-body">
+                        <% if (pendingFriendshipRequests.length > 0) { %>
+                            <ul class="list-group">
+                                <% for (token of pendingFriendshipRequests) { %>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <a href="/users/profile/<%= token.fromUser.id %>" class="fw-semibold text-blue">
+                                            <%= token.fromUser.name %>
+                                        </a>
+                                        <div>
+                                            <a href="/friends/add-friend-response/?from_user=<%=token.fromUser.email%>&to_user=<%=locals.user.email%>&value=<%=true%>&token=<%=encodeURIComponent(JSON.stringify(token))%>" class="btn btn-sm btn-success">
+                                                Accept
+                                            </a>
+                                            <a href="/friends/add-friend-response/?from_user=<%=token.fromUser.email%>&to_user=<%=locals.user.email%>&value=<%=false%>&token=<%=encodeURIComponent(JSON.stringify(token))%>" class="btn btn-sm btn-danger">
+                                                Reject
+                                            </a>
+                                        </div>
+                                    </li>
+                                <% } %>
+                            </ul>
+                        <% } else { %>
+                            <p class="text-muted">No pending friend requests.</p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="col-md-6">
+                <div class="card shadow-sm border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="fs-5 mb-0">Friend Requests Sent (<%= total_requests_send_still_pending %>)</h2>
+                    </div>
+                    <div class="card-body">
+                        <% if (requests_send_still_pending.length > 0) { %>
+                            <ul class="list-group">
+                                <% for (user of requests_send_still_pending) { %>
+                                    <li class="list-group-item">
+                                        <a href="/users/profile/<%= user.id %>" class="fw-semibold text-blue">
+                                            <%= user.name %>
+                                        </a>
+                                    </li>
+                                <% } %>
+                            </ul>
+                        <% } else { %>
+                            <p class="text-muted">No pending sent requests.</p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<% } %>

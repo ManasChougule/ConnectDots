@@ -1,0 +1,52 @@
+<!-- views/reels.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Reels</title>
+</head>
+<body>
+    <h1>Instagram Reels</h1>
+    
+    <div class="reels-container">
+        <% reels.data.forEach(reel => { %>
+            <div class="reel">
+                <p><%= reel.caption %></p>
+                <img src="<%= reel.thumbnail_url %>" alt="Reel Thumbnail">
+                <a href="<%= reel.permalink %>">View on Instagram</a>
+            </div>
+        <% }); %>
+    </div>
+</body>
+</html>
+
+
+
+<script>
+    let page = 1;
+    let isLoading = false;
+  
+    $(document).ready(function() {
+      $(window).scroll(function() {
+        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+          if (!isLoading) {
+            isLoading = true;
+            page++;
+            $.get(`/instagram/reels?page=${page}`, function(data) {
+              if (data.reels.length > 0) {
+                // Append new reels to the existing container
+                data.reels.forEach(reel => {
+                  // Append the new reel to the existing container
+                  $('.reels-container').append(`<div class="reel">...</div>`);
+                });
+                isLoading = false;
+              }
+            });
+          }
+        }
+      });
+    });
+  </script>
+  

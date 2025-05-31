@@ -1,0 +1,71 @@
+h1 {
+  color: brown;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+}
+
+.flex-container .profile_user_posts #pagesInProfile {
+  display: flex;
+  margin-top: 60px;
+  justify-content: center;
+}
+
+.card.shadow-sm.p-3 {
+  border: none;
+}
+
+.shadow-sm {
+  box-shadow: none !important;
+}
+
+.imageShadow {
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.profile_user_friends ul::-webkit-scrollbar {
+  width: 6px;
+}
+
+.profile_user_friends ul::-webkit-scrollbar-thumb {
+  background: rgba(0, 123, 255, 0.3);
+  border-radius: 4px;
+}
+
+.profile_user_friends li a:hover {
+  color: #007bff !important;
+  background: rgba(0, 123, 255, 0.08);
+  border-radius: 4px;
+}
+
+.btn-grp .btn a {
+  color: #007bff !important;
+  font-weight: bold;
+  text-decoration: none !important;
+  display: block;
+  padding: 5px 10px;
+}
+
+.btn-grp .btn:hover a {
+  color: #fff !important;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+/** some additional styles added cause post is not properly visible due to some conflicting css */
+p.mb-1.post-content {
+    margin: auto;
+    margin-top : -1rem;
+}
+
+p.mb-1 {
+    margin-left: 50%;
+}
+
+.small.text-muted.fst-italic {
+    color:#7f7f7f !important;
+    margin-left: 48%;
+}

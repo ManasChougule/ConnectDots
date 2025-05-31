@@ -1,0 +1,62 @@
+
+<link rel="stylesheet" href="<%= assetPath('/css/chat_box.css') %>" >
+
+<% if (locals.user) { %>
+
+  <div id="chat-widget" class="chat-widget position-fixed">
+
+    <button
+      class="btn btn-info w-100 d-flex justify-content-between align-items-center"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#chatCollapse"
+      aria-expanded="false"
+      aria-controls="chatCollapse"
+    >
+      <span>Chat with <%=profileUser%></span>
+      <!-- <i class="fas fa-chevron-up transition-chevron"></i> -->
+       <i class="fas fa-chevron-up transition-chevron" id="chatChevron"></i>
+    </button>
+
+    <!-- Collapsible box that expands upward -->
+    <div
+      id="chatCollapse"
+      class="collapse chat-body-wrapper bg-white border rounded-top overflow-hidden"
+    >
+      <div id="user-chat-box" class="d-flex flex-column h-100">
+
+        <!-- Chat messages (scrollable area) -->
+        <ul id="chat-messages-list" class="flex-grow-1 overflow-auto px-2 py-2">
+          <li class="other-message d-flex flex-column justify-content-start mb-4">
+            <div class="p-3 ms-3" style="border-radius: 15px; background-color: #ffa0a0;">
+              <p class="small mb-0">Messages from <%=profileUser%></p>
+            </div>
+          </li>
+          <div class="chat-sender-email"></div>
+
+          <li class="self-message d-flex flex-column justify-content-end mb-4">
+            <div class="p-3 ms-3" style="border-radius: 15px; background-color: #a0dcff;">
+              <p class="small mb-0">Self Messages</p>
+            </div>
+          </li>
+
+        </ul>
+
+        <!-- Message input -->
+        <div class="input-group border-top p-2">
+          <input
+            type="text"
+            class="form-control"
+            id="InputMessage"
+            placeholder="Type message here"
+          />
+          <button class="btn btn-primary" type="button" id="send-message">
+            <i class="bi bi-send"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+<% } %>

@@ -1,0 +1,78 @@
+<!-- <h1>
+    <%= title %>
+</h1>
+<div id="all-users-container" class="user-list">
+    <ul>
+        <% for (let i = range-1; i >= 0; i--) {%>
+            <% if(all_notifications[i].count==0){%>
+                <li><span style="margin-right: 10%;"><%= all_notifications[i].notification %></span><span><%=all_notifications[i].time%></span></li>
+            <%} else if(all_notifications[i].count==1) {%>
+                <li><span style="margin-right: 10%;">🎉 <a href="/users/profile/<%= all_notifications[i].from_user %>"><%= senders[i] %></a> liked your <%= all_notifications[i].onModel %> '<%= all_notifications[i].notification %>' 😊.</span>  <span><%=all_notifications[i].time%></span></li>
+            <%} else if(all_notifications[i].count==2) {%>
+                <li><span style="margin-right: 10%;"><%= all_notifications[i].notification %></span><span><%=all_notifications[i].time%></span></li>
+            <%} else if(all_notifications[i].count==3) {%>
+                <li><span style="margin-right: 10%;"><%= all_notifications[i].notification %></span><span><%=all_notifications[i].time%></span></li>
+            <%} else if(all_notifications[i].count==4) {%>
+                <li><span style="margin-right: 10%;"><%= all_notifications[i].notification %></span><span><%=all_notifications[i].time%></span></li>
+            <%} else if(all_notifications[i].count==5) {%>
+                <li><span style="margin-right: 10%;"><%= all_notifications[i].notification %></span><span><%=all_notifications[i].time%></span></li>
+            <%} else if(all_notifications[i].count==6) {%>
+                <li><span style="margin-right: 10%;">🎉 <a href="/users/profile/<%= all_notifications[i].from_user %>"><%= senders[i] %></a> <%= all_notifications[i].notification %></span><span><%=all_notifications[i].time%></span></li>
+            <%} else if(all_notifications[i].count==7) {%>
+                <li><span style="margin-right: 10%;">🎉 <a href="/users/profile/<%= all_notifications[i].from_user %>"><%= senders[i] %></a> <%= all_notifications[i].notification %></span><span><%=all_notifications[i].time%></span></li>
+            <%} else if(all_notifications[i].count==8) {%>
+                <li><span style="margin-right: 10%;"><%= all_notifications[i].notification %></span><span><%=all_notifications[i].time%></span></li>
+            <%} else if(all_notifications[i].count==9) {%>
+                <li><span style="margin-right: 10%;"><a href="/users/profile/<%= all_notifications[i].from_user %>"><%= senders[i] %></a> <%= all_notifications[i].notification %></span><span><%=all_notifications[i].time%></span></li>
+            <%} else if(all_notifications[i].count==10) {%>
+                <li><span style="margin-right: 10%;"><%= all_notifications[i].notification %><a href="/users/profile/<%= all_notifications[i].from_user %>"><%= senders[i] %></a>😊</span><span><%=all_notifications[i].time%></span></li>
+            <%} else if(all_notifications[i].count==11) {%>
+                <li><span style="margin-right: 10%;"><%= all_notifications[i].notification %></span><span><%=all_notifications[i].time%></span></li>
+            <%} else if(all_notifications[i].count==12) {%>
+                <li><span style="margin-right: 10%;">🎉 <a href="/users/profile/<%= all_notifications[i].from_user %>"><%= senders[i] %></a> <%= all_notifications[i].notification %></span><span><%=all_notifications[i].time%></span></li>
+            <%}%>
+        <% } %>
+    </ul>
+</div>
+ -->
+
+
+
+ <div class="container py-5">
+    <h1 class="mb-5 text-center text-primary fw-bold display-5">
+        <%= title %>
+    </h1>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12 ">
+            <div class="d-grid gap-3">
+                <% for (let i = range - 1; i >= 0; i--) { %>
+                    <% let notif = all_notifications[i]; %>
+                    <% let message = ""; %>
+                    <% if (notif.count === 1) { %>
+                        <% message = `🎉 <a href="/users/profile/${notif.from_user}" class="fw-semibold text-decoration-none text-success">${senders[i]}</a> &nbsp;has liked your ${notif.onModel} '${notif.notification}' 😊.`; %>
+                    <% } else if ([6, 7, 12].includes(notif.count)) { %>
+                        <% message = `🎉 <a href="/users/profile/${notif.from_user}" class="fw-semibold text-decoration-none text-success">${senders[i]}</a> ${notif.notification}`; %>
+                    <% } else if (notif.count === 9) { %>
+                        <% message = `<a href="/users/profile/${notif.from_user}" class="fw-semibold text-decoration-none text-success">${senders[i]}</a> ${notif.notification}`; %>
+                    <% } else if (notif.count === 10) { %>
+                        <% message = `${notif.notification} <a href="/users/profile/${notif.from_user}" class="fw-semibold text-decoration-none text-success">&nbsp;${senders[i]}</a> 😊`; %>
+                    <% } else { %>
+                        <% message = notif.notification; %>
+                    <% } %>
+
+                    <div class="p-3 bg-light border rounded-4 shadow-sm d-flex justify-content-between align-items-center">
+                        <div class="flex-grow-1 d-flex justify-content-center text-dark fs-6">
+                            <span><%- message %></span>
+                        </div>
+
+                        <div class="text-muted small flex-shrink-0 ms-3">
+                            <%= notif.time %>
+                        </div>
+                    </div>
+
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="container py-5">
+    <h1 class="mb-5 text-center text-success fw-bold display-5">
+        <%= title %>
+    </h1>
+
+    <% if (locals.user) { %>
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 col-sm-10">
+                <div class="d-grid gap-4">
+                    <% for (let i = 0; i < range; i++) { 
+                        let friend = all_friends[i].to_user.name !== locals.user.name 
+                                     ? all_friends[i].to_user 
+                                     : all_friends[i].from_user;
+                    %>
+                        <a href="/users/profile/<%= friend.id %>" 
+                           class="text-decoration-none p-4 rounded-4 shadow-sm d-block 
+                                  text-dark fw-semibold fs-5" style="background-color: #7ac1ff;">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span><%= friend.name %></span>
+                                <i class="bi bi-arrow-right-circle-fill text-success fs-4"></i>
+                            </div>
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</div>
+
+
+
+    
+    <nav aria-label="Page navigation" class="mt-5">
+        <ul class="pagination justify-content-center p-3 rounded-4">
+
+            <% for (let i = pageNo - 2; i <= pageNo + 2; i++) { %>
+                <% if (i > 0) { 
+                    let showPage = false;
+                    if (i < pageNo) {
+                        showPage = true;
+                    } else if (i === pageNo && friends_length > 7) {
+                        showPage = true;
+                    } else if (i === pageNo + 1 && friends_length > 7) {
+                        showPage = true;
+                    } else if (i === pageNo + 2 && friends_length > 14) {
+                        showPage = true;
+                    }
+                %>
+                <% if (showPage) { %>
+                    <li class="page-item <%= i === pageNo ? 'active' : '' %>">
+                        <a class="page-link fw-semibold px-3 py-2" 
+                        href="/friends/allFriends/?pageNo=<%= i %>"
+                        style="border-radius: 0.75rem;">
+                            <%= i %>
+                        </a>
+                    </li>
+                <% } } %>
+            <% } %>
+        </ul>
+    </nav>
+
+
+

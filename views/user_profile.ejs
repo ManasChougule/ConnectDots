@@ -1,0 +1,272 @@
+<link rel="stylesheet" href="<%= assetPath('/css/user_profile.css') %>">
+<link rel="stylesheet" href="<%= assetPath('/css/home.css') %>">
+
+<h1 class="mb-3 text-center"><%= title %></h1>
+
+<div class="container">
+    <div class="row align-items-start">
+        <% if(user.id == profile_user.id){ %>
+            <form action="/users/update/<%= profile_user.id %>" enctype="multipart/form-data" method="POST" onsubmit="return validateName() && validateEmail()" class="mb-4">
+                <div class="row align-items-start">
+                    <!-- First Column: Profile pic, name, file input -->
+                    <div class="col-md-3 text-center">
+                        <div class="position-relative d-flex justify-content-center">
+                            <% if (profile_user.avatar && profile_user.avatar.trim() !== "") { %>
+                                <img src="/images/fetchImage/<%= profile_user.avatar %>" alt="<%= profile_user.name %>"
+                                    class="rounded-circle mb-2 imageShadow"
+                                    style="width: 160px; height: 160px; object-fit: cover; border: 1px solid #ddd;">
+                            <% } else { %>
+                                <div class="rounded-circle d-flex align-items-center justify-content-center bg-light"
+                                    style="width: 160px; height: 160px; border: 1px solid #ddd;">
+                                    <i class="fas fa-camera text-muted" style="font-size: 2.5em;"></i>
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div><strong><%= profile_user.name %></strong></div>
+
+                        <div class="mt-3">
+                            <input type="file" name="avatar" id="avatarInput" class="d-none" accept="image/*" />
+                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="document.getElementById('avatarInput').click()">
+                                <i class="fas fa-upload me-1"></i> Choose Avatar
+                            </button>
+                            <div id="selectedFileName" class="mt-2 text-primary fw-semibold" style="font-size: 0.9em;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Second Column: Editable profile fields -->
+                    <div class="col-md-5 ms-3">
+                        <div class="form-floating mb-2">
+                            <input id="name" type="text" name="name" class="form-control ps-3" placeholder="Your Name" value="<%= profile_user.name %>" required>
+                            <label for="name">Name</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input id="email" type="email" name="email" class="form-control ps-3" placeholder="Your Email" value="<%= profile_user.email %>" required>
+                            <label for="email">Email</label>
+                        </div>
+
+                        <button class="btn btn-primary shadow-sm w-50 update-btn">
+                            <i class="fas fa-save me-1"></i> Update
+                        </button>
+                    </div>
+
+                    <!-- Third Column: Friends list -->
+                    <div class="col-md-3 ms-3 profile_user_friends" style="max-width: 240px;">
+                        <p class="fw-semibold mb-2">Friends: <%= totalCountOfFriends %></p>
+                        <% if(isFriend === 1 || user.id === profile_user.id || user.email === 'manaschougule2019@gmail.com') {%>
+                            <% if (Object.keys(friends_list).length > 0) { %>
+                                <ul class="list-unstyled ps-0" style="max-height: 260px; overflow-y: auto;">
+                                    <% friends_list.forEach(friend => { 
+                                        const friendUser = (profile_user.name === friend.to_user.name) ? friend.from_user : friend.to_user; %>
+                                        <li class="py-1">
+                                            <a href="/users/profile/<%= friendUser.id %>" class="text-decoration-none text-dark d-block">
+                                                <i class="fas fa-user me-2 text-primary"></i><%= friendUser.name %>
+                                            </a>
+                                        </li>
+                                    <% }) %>
+                                </ul>
+                            <% } else { %>
+                                <p class="text-muted">No friends to show.</p>
+                            <% } %>
+                        <% } %>
+                    </div>
+                </div>
+            </form>
+
+        <% } else { %>
+        <!-- Profile of other users -->
+        <div class="row align-items-start">
+            <!-- First Column: Profile pic, name -->
+            <div class="col-md-3 ms-3 text-center">
+                <div class="position-relative d-flex justify-content-center" style="margin-top: -20px;">
+                    <% if (profile_user.avatar && profile_user.avatar.trim() !== "") { %>
+                        <img src="/images/fetchImage/<%= profile_user.avatar %>" alt="<%= profile_user.name %>"
+                            class="rounded-circle mb-2 imageShadow"
+                            style="width: 160px; height: 160px; object-fit: cover; border: 1px solid #ddd;">
+                    <% } else { %>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-light"
+                            style="width: 160px; height: 160px; border: 1px solid #ddd;">
+                            <i class="fas fa-camera text-muted" style="font-size: 2.5em;"></i>
+                        </div>
+                    <% } %>
+                </div>
+                <div><strong><%= profile_user.name %></strong></div>
+            </div>
+
+            <!-- Second Column: Email and Action Buttons -->
+            <div class="col-md-5 ms-3">
+                <strong><p>Email: <%= profile_user.email %></p></strong>
+
+                <% if(user.email === 'manaschougule2019@gmail.com' && user.id !== profile_user.id){ %>
+                <button class="mb-3 btn btn-outline-secondary">
+                    <a class="toggle-friend-btn text-purple" href="/users/blockUser/?id=<%= profile_user.id %>&email=<%= profile_user.email %>">Block User</a>
+                </button>
+                <% } %>
+
+                <div class="btn-grp">
+                    <% if(isFriend === 1) { %>
+                        <button class="btn btn-outline-primary">
+                            <a class="toggle-friend-btn text-purple" href="/friends/add-friend/?id=<%= profile_user.id %>" data-action="remove"> Remove From Friend List </a>
+                        </button>
+                    <% } else if(isFriend === 0) { %>
+                        <button class="btn btn-outline-primary">
+                            <a class="toggle-friend-btn text-purple" href="/friends/add-friend/?id=<%= profile_user.id %>" data-action="add"> Add Into Friend List </a>
+                        </button>
+                    <% } else { %>
+                        <button class="btn btn-secondary" disabled> Pending </button>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Third Column: Friends list -->
+            <div class="col-md-3 ms-3 profile_user_friends" style="max-width: 240px;">
+                <p class="fw-semibold mb-2">Friends: <%= totalCountOfFriends %></p>
+                <% if(isFriend === 1 || user.id === profile_user.id || user.email === 'manaschougule2019@gmail.com') {%>
+                    <% if (Object.keys(friends_list).length > 0) { %>
+                        <ul class="list-unstyled ps-0" style="max-height: 260px; overflow-y: auto;">
+                            <% friends_list.forEach(friend => { 
+                                const friendUser = (profile_user.name === friend.to_user.name) ? friend.from_user : friend.to_user; %>
+                                <li class="py-1">
+                                    <a href="/users/profile/<%= friendUser.id %>" class="text-decoration-none text-dark d-block">
+                                        <i class="fas fa-user me-2 text-primary"></i><%= friendUser.name %>
+                                    </a>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    <% } else { %>
+                        <p class="text-muted">No friends to show.</p>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+        <% } %>
+    </div>
+</div>
+
+<!-- Posts section (unchanged) -->
+<div class="container my-4 mb-5">
+  <p><b>Posts : <%= totalPostsCount %></b></p>
+  <% if(isFriend == 1 || user.id == profile_user.id || user.email == 'manaschougule2019@gmail.com') { %>
+  <div id="posts-list-container" class="card shadow-sm p-3">
+    <ul class="list-unstyled mb-0">
+      <% if(isFriend == 1 || user.id == profile_user.id || user.email == 'manaschougule2019@gmail.com'){ %>  
+        <% for (post of posts){ %>  
+          <%- include("_post") -%>
+        <% } %>
+      <% } %>
+    </ul>
+  </div>
+
+    <nav aria-label="Page navigation" class="mt-5">
+      <ul class="pagination justify-content-center p-3 rounded-4">
+        <% for (let i = pageNo - 2; i <= pageNo + 2; i++) { %>
+          <% if (i > 0) { 
+            let showPage = false;
+            if (i < pageNo) {
+              showPage = true;
+            } else if (i === pageNo && posts_length > 5) {
+              showPage = true;
+            } else if (i === pageNo + 1 && posts_length > 5) {
+              showPage = true;
+            } else if (i === pageNo + 2 && posts_length > 10) {
+              showPage = true;
+            }
+          %>
+          <% if (showPage) { %>
+            <li class="page-item <%= i === pageNo ? 'active' : '' %>">
+              <a class="page-link fw-semibold px-3 py-2" 
+                 href="/users/profile/<%= profile_user.id %>?pageNo=<%= i %>"
+                 style="border-radius: 0.75rem;">
+                 <%= i %>
+              </a>
+            </li>
+          <% } } %>
+        <% } %>
+      </ul>
+    </nav>
+  <% } %>
+
+  <% if(user.id != profile_user.id) { %>  
+    <%- include('_chat_box', { profileUser: profile_user.name }) -%>  
+  <% } %>
+</div>
+
+<!-- Existing scripts remain unchanged -->
+
+  <script>
+    function validateName() {
+      var name = document.getElementById('name');
+      var namePattern = /^[A-Za-z]+$/;
+      if (!namePattern.test(name.value)) {
+        alert('Name should only contain letters without spaces.');
+        name.value = ''; 
+        return false; 
+      }
+      if (name.value.length > 20) {
+        alert('Name is too long. Please use a shorter name');
+        name.value = ''; 
+        return false; 
+      }
+      return true; 
+    }
+
+    function validateEmail() {
+      var email = document.getElementById('email');
+      var emailPattern = /^[a-zA-Z0-9]+@gmail.com$/;
+      if (email.value.length > 50) {
+        alert('Email is too long. Please use a shorter email address.')
+        email.value = ''; 
+        return false; 
+      }
+      if (!emailPattern.test(email.value)) {
+        alert('Please use a Gmail address to create an account.')
+        email.value = ''; 
+        return false; 
+      }
+      return true; 
+    }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const input = document.getElementById('avatarInput');
+            const fileNameDisplay = document.getElementById('selectedFileName');
+
+            input.addEventListener('change', function () {
+                if (input.files.length > 0) {
+                    fileNameDisplay.textContent = input.files[0].name;
+                } else {
+                    fileNameDisplay.textContent = '';
+                }
+            });
+        });
+  </script>
+
+
+<script src="<%= assetPath('/js/home_post_comments.js') %>"></script>
+<script src="<%= assetPath('/js/home_posts.js') %>"></script>
+<script src="<%= assetPath('/js/toggle_likes.js') %>"></script>   
+<script>
+  $('.toggle-like-button').each(function(){
+    let self = this;
+    let toggleLike = new ToggleLike(self);
+  });
+</script>
+
+<script src="<%= assetPath('/js/toggle_friend.js') %>"></script>   
+<script>
+  $(".toggle-friend-btn").each(function(){
+    let self = this;
+    let toggleFriend = new ToggleFriend(self);
+  });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.1/socket.io.js"></script>
+<script src="<%= assetPath('/js/chat_engine.js') %>" ></script>
+<% if (locals.user){ %>
+  <script>
+    const encodedProfileUser = '<%= encodeURIComponent(JSON.stringify(profile_user.email)) %>';
+    const profileUser = JSON.parse(decodeURIComponent(encodedProfileUser));
+    new ChatEngine('user-chat-box', '<%= locals.user.email %>', profileUser);
+  </script>
+<% } %>

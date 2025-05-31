@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="form-box shadow rounded-3 p-4 bg-white mt-5 mx-auto" style="max-width: 400px;">
+    <h1 class="text-center mb-4">Sign In</h1>
+
+    <form action="/users/create-session" method="POST" onsubmit="return validateEmail() && validatePasswords()">
+      <div class="mb-3">
+        <input id="email" type="email" name="email" class="form-control" placeholder="Enter Email" required>
+        <span id="emailSpan" class="form-text text-danger"></span>
+      </div>
+
+      <div class="mb-3">
+        <input id="password" type="password" name="password" class="form-control" placeholder="Enter Password" required>
+        <span id="passwordSpan" class="form-text text-danger"></span>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Sign In</button>
+    </form>
+
+    <!-- <p class="mt-3 text-center">
+      <a href="/users/auth/google" class="btn btn-light d-inline-flex align-items-center gap-2 px-3 py-2 border">
+        <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo" width="20" height="20">
+        Google Sign In / Sign Up
+      </a>
+    </p> -->
+
+    <p class="text-center mt-3">
+      <a href="/users/forgot-password" class="text-decoration-none">Forgot password?</a>
+    </p>
+  </div>
+</div>
+
+
+
+<script>
+    function validateEmail() {
+        
+        var email = document.getElementById('email').value;
+        var emailSpan = document.getElementById('emailSpan');
+        var emailPattern = /^[a-zA-Z0-9]+@gmail.com$/;
+        if (email.length > 50) {
+            document.getElementById('email').value = '';  
+            emailSpan.innerText = 'Email is too long. Please use a shorter email address.'
+            return false; 
+        }else{
+            emailSpan.innerText = ""
+        }  
+        if (!emailPattern.test(email)) {
+            document.getElementById('email').value = ''; 
+            emailSpan.innerText = 'Please use a Gmail address to login to your account.'
+            return false; 
+        }else{
+            emailSpan.innerText = ""
+        }
+        return true; 
+    }
+
+    function validatePasswords() {
+        var password = document.getElementById('password').value;
+        if (password.length > 30) {
+            password.value = ''; 
+            document.getElementById('passwordSpan').innerText = "Password length must be less than 30"
+            return false; 
+        }else{
+            document.getElementById('passwordSpan').innerText = "";
+        }
+        return true; 
+    }
+
+</script>
+
+
+ 
+ 
+ 

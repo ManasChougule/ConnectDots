@@ -1,0 +1,21 @@
+
+
+  body {
+    background-color: #f0f2f5;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .form-box {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+    max-width: 500px;
+    margin: 60px auto;
+  }
+
+  .form-text {
+    min-height: 1rem;
+    display: block;
+    margin-top: 4px;
+  }

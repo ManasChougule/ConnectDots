@@ -1,0 +1,180 @@
+<link rel="stylesheet" href="<%= assetPath('/css/sign_up.css') %>">
+
+<div class="container">
+  <div class="form-box shadow rounded-3 p-4 bg-white mt-5">
+    <h3 class="text-center mb-4">Create an Account</h3>
+    
+    <form action="/users/create" method="POST" onsubmit="return validatePasswords() && validateEmail() && validateName()">
+
+      <div class="mb-3">
+        <input type="text" class="form-control" id="name" name="name"
+               placeholder="Name"
+               value="<%= typeof name !== 'undefined' ? name : '' %>" required>
+        <span id="nameSpan" class="form-text text-danger"></span>
+      </div>
+
+      <div class="mb-3">
+        <input type="email" class="form-control" id="email" name="email"
+               placeholder="Email"
+               value="<%= typeof email !== 'undefined' ? email : '' %>" required>
+        <span id="emailSpan" class="form-text text-danger"></span>
+      </div>
+
+      <div class="mb-3">
+        <input type="password" class="form-control" id="password" name="password"
+               placeholder="Password"
+               onkeyup="checkPasswordStrength();" required>
+        <span id="password-strength" class="form-text text-warning"></span>
+      </div>
+
+      <div class="mb-3">
+        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+               placeholder="Confirm Password" required>
+        <span id="password-match" class="form-text text-danger"></span>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+    </form>
+
+    <!-- Google Sign In Button -->
+    <!-- <a href="/users/auth/google" class="google-btn btn-light mt-3 d-flex align-items-center justify-content-center gap-2 text-decoration-none">
+      <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo" width="24" height="24">
+      Google Sign In / Sign Up
+    </a> -->
+
+  </div>
+</div>
+
+
+<script>
+    function verify_strength_of_password(password) {
+        
+        if (password.length < 8) {
+            return 0; 
+        }
+
+        if (!/[a-z]/.test(password)) {
+            return 1; 
+        }
+
+        if (!/[A-Z]/.test(password)) {
+            return 2; 
+        }
+
+        if (!/\d/.test(password)) {
+            return 3; 
+        }
+
+        const specialChars = "!@#$%^&*()-_=+[]{};:,.<>?";
+        if (![...password].some(char => specialChars.includes(char))) {
+            return 4; 
+        }
+
+        if (password.length > 30){
+            
+            return 5;
+        }
+
+        return 6; 
+    }
+
+    function checkPasswordStrength() {
+        var password = document.getElementById('password').value;
+        var confirm_password = document.getElementById('confirm_password');
+        
+
+        var strength = verify_strength_of_password(password);
+        var strengthMessages = [
+            "Password must be at least 8 characters long.",
+            "Password must contain at least one lowercase letter.",
+            "Password must contain at least one uppercase letter.",
+            "Password must contain at least one digit.",
+            "Password must contain at least one special character.",
+            "Password must be at most 30 characters long.",
+            "Strong password. Well done!"
+        ];  
+        
+        document.getElementById('password-strength').innerText = strengthMessages[strength];
+        
+        if (strength === 6) {
+            confirm_password.disabled = false;
+            
+        } else {
+            confirm_password.disabled = true;
+            confirm_password.value = '';
+        }
+    }
+
+    function validatePasswords() {
+        var password = document.getElementById('password').value;
+        var confirm_password = document.getElementById('confirm_password').value;
+
+        if (document.getElementById('name').value .length > 15) {
+            document.getElementById('name').value = ''; 
+            return false; 
+        }
+
+        if (password !== confirm_password) {
+            document.getElementById('password-match').innerText = 'Passwords do not match.';
+            return false; 
+        }
+        return true; 
+    }
+
+    document.getElementById("name").addEventListener("input", function() {
+        var name = this.value;
+        var nameSpanElement = document.getElementById("nameSpan");
+        
+        if (name.length > 15) {
+            nameSpanElement.textContent = "Name must be at most 15 characters long";
+        } else {
+            nameSpanElement.textContent = "";
+        }
+    });
+
+    function validateEmail() {
+        var email = document.getElementById('email').value;
+        var emailSpan = document.getElementById('emailSpan');
+        var emailPattern = /^[a-zA-Z0-9]+@gmail.com$/;
+        if (email.length > 50) {
+            document.getElementById('email').value = ''; 
+            
+            emailSpan.innerText = 'Email is too long. Please use a shorter email address.'
+            return false; 
+        }else{
+            emailSpan.innerText = ""
+        }
+        if (!emailPattern.test(email)) {
+            document.getElementById('email').value = ''; 
+            
+            emailSpan.innerText = 'Please use a Gmail address to create an account.'
+            return false; 
+        }else{
+            emailSpan.innerText = ""
+        }
+        return true; 
+    }
+
+    function validateName() {
+        var name = document.getElementById('name').value;
+        var namePattern = /^[A-Za-z]+$/; 
+        var nameSpanElement = document.getElementById('nameSpan');
+        if (!namePattern.test(name)) {
+            name.value = ''; 
+            nameSpanElement.innerText = 'Name should only contain letters without spaces.'; 
+            return false; 
+        }else{
+            nameSpanElement.innerText = ""
+        }
+        
+        if (name.length > 20) {
+            name.value = ''; 
+            nameSpanElement.innerText = 'Name is too long. Please use a shorter name.'; 
+            return false; 
+        }else{
+            nameSpanElement.innerText = ""
+        }
+        return true; 
+    }
+
+</script>

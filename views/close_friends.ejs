@@ -1,0 +1,209 @@
+<!-- <h4> Close Friends</h4>
+<% for(close_friend of all_close_friends){ %>
+    <li><p class="user-item">
+        <a href="/users/profile/<%= close_friend.id %>"><%= close_friend.name %></a>
+        <a class="toggle-friend-btn" href="/friends/add-close-friend/?close_friend_id=<%=close_friend.id%>&user_id=<%=locals.user.id%>">Remove</a>
+    </p></li>
+<% } %>
+
+<% if (length>0){ %>
+    <h4>Suggested</h4>
+<% }else{%>
+    <% if (all_close_friends.length==0){ %>
+        <h4>No more friends to suggest!</h4>
+    <% }else{%>
+        <h4>Your friend list is empty at the moment !</h4>
+    <%}%>   
+    <h4>Consider expanding your social circle by reaching out and connecting with others 😊.</h4>
+<%}%>
+
+<% for(friend of all_friends){ %>
+    <% if (friend.to_user.name != locals.user.name) {%>
+        <% if(friend.closeFriendStatus_fromUser_to_toUser==0) {%>
+            <li><p class="user-item">
+                    <a href="/users/profile/<%= friend.to_user.id %>"><%= friend.to_user.name %></a>
+                    <a class="toggle-friend-btn" href="/friends/add-close-friend/?close_friend_id=<%=friend.to_user.id%>">Add</a>
+            </p></li>
+        <%}%>
+    <% } else {%>
+        <% if(friend.closeFriendStatus_toUser_to_fromUser==0) {%>   
+            <li><p class="user-item"> 
+                    <a href="/users/profile/<%= friend.from_user.id %>"><%= friend.from_user.name %></a>
+                    <a class="toggle-friend-btn" href="/friends/add-close-friend/?close_friend_id=<%=friend.from_user.id%>">Add</a>
+            </p></li>
+        <%}%>
+    <% } %>
+<% } %>       -->
+
+
+<!-- <div class="container mt-3">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="card shadow-sm border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="fs-5 mb-0">Close Friends</h4>
+                </div>
+                <div class="card-body">
+                    <% if (all_close_friends.length > 0) { %>
+                        <ul class="list-group">
+                            <% for (close_friend of all_close_friends) { %>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="/users/profile/<%= close_friend.id %>" class="toggle-friend-btn fw-semibold text-dark">
+                                        <%= close_friend.name %>
+                                    </a>
+                                    <a class="btn btn-outline-danger btn-sm" href="/friends/add-close-friend/?close_friend_id=<%= close_friend.id %>&user_id=<%= locals.user.id %>">
+                                        Remove
+                                    </a>
+                                </li>
+                            <% } %>
+                        </ul>
+                    <% } else { %>
+                        <p class="text-muted">You currently have no close friends added.</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm border-primary">
+                <div class="card-header bg-primary text-white">
+                    <% if (length > 0) { %>
+                        <h4 class="fs-5 mb-0">Suggested Friends</h4>
+                    <% } else { %>
+                        <% if (all_close_friends.length == 0) { %>
+                            <h4 class="fs-5 mb-0">No more friends to suggest!</h4>
+                        <% } else { %>
+                            <h4 class="fs-5 mb-0">Your friend list is empty at the moment!</h4>
+                            <p class="text-muted">Consider expanding your social circle by connecting with others. 😊</p>
+                        <% } %>
+                    <% } %>
+                </div>
+                <div class="card-body">
+                    <% if (all_friends.length > 0) { %>
+                        <ul class="list-group">
+                            <% for (friend of all_friends) { %>
+                                <% if (friend.to_user.name != locals.user.name) { %>
+                                    <% if (friend.closeFriendStatus_fromUser_to_toUser == 0) { %>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <a href="/users/profile/<%= friend.to_user.id %>" class="fw-semibold text-dark">
+                                                <%= friend.to_user.name %>
+                                            </a>
+                                            <a class="btn btn-outline-success btn-sm" href="/friends/add-close-friend/?close_friend_id=<%= friend.to_user.id %>">
+                                                Add
+                                            </a>
+                                        </li>
+                                    <% } %>
+                                <% } else { %>
+                                    <% if (friend.closeFriendStatus_toUser_to_fromUser == 0) { %>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <a href="/users/profile/<%= friend.from_user.id %>" class="fw-semibold text-dark">
+                                                <%= friend.from_user.name %>
+                                            </a>
+                                            <a class="btn btn-outline-success btn-sm" href="/friends/add-close-friend/?close_friend_id=<%= friend.from_user.id %>">
+                                                Add
+                                            </a>
+                                        </li>
+                                    <% } %>
+                                <% } %>
+                            <% } %>
+                        </ul>
+                    <% } else { %>
+                        <p class="text-muted">No additional friends to suggest.</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="container">
+    <div class="row mt-3">
+        <!-- Left Column: Close Friends -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="fs-5 mb-0">Close Friends</h4>
+                </div>
+                <div class="card-body">
+                    <% if (all_close_friends.length > 0) { %>
+                        <ul class="list-group">
+                            <% for (close_friend of all_close_friends) { %>
+                                <li class="list-group-item user-item d-flex justify-content-between align-items-center">
+                                    <a href="/users/profile/<%= close_friend.id %>" class="fw-semibold text-primary text-decoration-none">
+                                        <%= close_friend.name %>
+                                    </a>
+                                    <a class="toggle-friend-btn btn btn-outline-danger btn-sm" 
+                                       href="/friends/add-close-friend/?close_friend_id=<%= close_friend.id %>&user_id=<%= locals.user.id %>">
+                                        Remove
+                                    </a>
+                                </li>
+                            <% } %>
+                        </ul>
+                    <% } else { %>
+                        <p class="text-muted">You currently have no close friends added.</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Suggested Friends -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-primary">
+                <div class="card-header bg-primary text-white">
+                    <% if (length > 0) { %>
+                        <h4 class="fs-5 mb-0">Suggested Friends</h4>
+                    <% } else { %>
+                        <% if (all_close_friends.length == 0) { %>
+                            <h4 class="fs-5 mb-0">No more friends to suggest!</h4>
+                        <% } else { %>
+                            <h4 class="fs-5 mb-0">Your friend list is empty at the moment!</h4>
+                            <p class="text-muted">Consider expanding your social circle by connecting with others. 😊</p>
+                        <% } %>
+                    <% } %>
+                </div>
+                <div class="card-body">
+                    <% if (all_friends.length > 0) { %>
+                        <ul class="list-group">
+                            <% for (friend of all_friends) { %>
+                                <% if (friend.to_user.name != locals.user.name && friend.closeFriendStatus_fromUser_to_toUser == 0) { %>
+                                    <li class="list-group-item user-item d-flex justify-content-between align-items-center">
+                                        <a href="/users/profile/<%= friend.to_user.id %>" class="fw-semibold text-primary text-decoration-none">
+                                            <%= friend.to_user.name %>
+                                        </a>
+                                        <a class="toggle-friend-btn btn btn-outline-success btn-sm" 
+                                           href="/friends/add-close-friend/?close_friend_id=<%= friend.to_user.id %>">
+                                            Add
+                                        </a>
+                                    </li>
+                                <% } else if (friend.closeFriendStatus_toUser_to_fromUser == 0) { %>
+                                    <li class="list-group-item user-item d-flex justify-content-between align-items-center">
+                                        <a href="/users/profile/<%= friend.from_user.id %>" class="fw-semibold text-primary text-decoration-none">
+                                            <%= friend.from_user.name %>
+                                        </a>
+                                        <a class="toggle-friend-btn btn btn-outline-success btn-sm" 
+                                           href="/friends/add-close-friend/?close_friend_id=<%= friend.from_user.id %>">
+                                            Add
+                                        </a>
+                                    </li>
+                                <% } %>
+                            <% } %>
+                        </ul>
+                    <% } else { %>
+                        <p class="text-muted">No additional friends to suggest.</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="<%= assetPath('/js/toggle_friend.js') %>"></script>   
+<script>
+    $(".toggle-friend-btn").each(function(){
+        let self = this;
+        let toggleFriend = new ToggleFriend(self);
+    });
+</script>   
