@@ -1,8 +1,8 @@
 const express = require('express');
 const { route } = require('./routes');
-const port = 8000;
 const app = express();
 const CORS = require('cors');
+// const port = 8000;
 app.use(CORS({
     origin: '*'
 }));
@@ -90,8 +90,9 @@ app.use('/', (req, res, next) => {
 }, require('./routes'));
 
 
-
+const port = env.server_port;
+const chat_port = env.chat_port;
 app.listen(port, function (err) {
-    chatServer.listen(5000);
+    chatServer.listen(chat_port);
     console.log("Listening on port", port)
 })

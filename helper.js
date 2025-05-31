@@ -13,7 +13,37 @@ function getWiFiIPv4Address() {
     //     }
     // }
     // return "No Wi-Fi IPv4 address found";
-    return '13.204.64.57';
+    // if (process.env.CONNECT_DOTS_ENVIRONMENT == 'production') {
+    //     // Usage
+    // getPublicIP()
+    //     .then(ip => console.log('Public IP:', ip))
+    //     .catch(err => console.error('Error:', err.message));
+    
+    // }
+    // return '13.204.64.57';
+    return process.env.WIFI_IP
 }
+const http = require('http');
 
+function getPublicIP() {
+    return new Promise((resolve, reject) => {
+        const options = {
+            host: '169.254.169.254',
+            path: '/latest/meta-data/public-ipv4',
+            timeout: 2000
+        };
+
+        const req = http.get(options, (res) => {
+            let data = '';
+            res.on('data', (chunk) => data += chunk);
+            res.on('end', () => resolve(data));
+        });
+
+        req.on('error', (err) => reject(err));
+        req.on('timeout', () => {
+            req.destroy();
+            reject(new Error('Request timeout'));
+        });
+    });
+}
 module.exports.getWiFiIPv4Address = getWiFiIPv4Address;
