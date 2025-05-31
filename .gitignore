@@ -1,6 +1,6 @@
 node_modules/
 .env
-environment.js
+# environment.js
 production_logs/access.logs
 uploads/users/avatars/
 uploads/posts/
