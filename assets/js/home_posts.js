@@ -81,8 +81,8 @@
                 </a>
 
                 ${post.imageUrl ? `
-                <div class="text-center my-3">
-                    <img src="${post.imageUrl}" alt="User image" class="img-fluid rounded" style="height: 80%; width: 80%; object-fit: cover;">
+                <div class="imageDiv text-center my-3">
+                    <img src="${post.imageUrl}" alt="Post image" class="img-fluid rounded" style="max-width: 100%; max-height: 400px; width: auto; height: auto; object-fit: contain;">
                 </div>` : ''
                 }
 

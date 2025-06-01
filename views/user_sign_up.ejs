@@ -125,8 +125,8 @@
         var name = this.value;
         var nameSpanElement = document.getElementById("nameSpan");
         
-        if (name.length > 15) {
-            nameSpanElement.textContent = "Name must be at most 15 characters long";
+        if (name.length > 50) {
+            nameSpanElement.textContent = "Name must be at most 50 characters long";
         } else {
             nameSpanElement.textContent = "";
         }
@@ -135,7 +135,7 @@
     function validateEmail() {
         var email = document.getElementById('email').value;
         var emailSpan = document.getElementById('emailSpan');
-        var emailPattern = /^[a-zA-Z0-9]+@gmail.com$/;
+        var emailPattern = /^[a-zA-Z0-9._]+@gmail\.com$/;
         if (email.length > 50) {
             document.getElementById('email').value = ''; 
             
@@ -167,7 +167,7 @@
             nameSpanElement.innerText = ""
         }
         
-        if (name.length > 20) {
+        if (name.length > 50) {
             name.value = ''; 
             nameSpanElement.innerText = 'Name is too long. Please use a shorter name.'; 
             return false; 
@@ -176,5 +176,35 @@
         }
         return true; 
     }
+
+
+    function validateName() {
+    var name = document.getElementById('name').value;
+    var nameSpanElement = document.getElementById('nameSpan');
+
+    name = name.trim().replace(/\s+/g, ' ');
+
+    // Check if the trimmed name is empty
+    if (name.length === 0) {
+        nameSpanElement.innerText = 'Please enter a valid name.';
+        return false;
+    } 
+
+    var namePattern = /^[A-Za-z ]+$/; 
+    if (!namePattern.test(name)) {
+        nameSpanElement.innerText = 'Name should only contain letters and spaces.';
+        return false;
+    }
+
+    // Check length constraint
+    if (name.length > 50) {
+        nameSpanElement.innerText = 'Name is too long. Please use a shorter name.';
+        return false;
+    }
+
+    // Set the cleaned name back into the input field
+    document.getElementById('name').value = name;
+    return true;
+}
 
 </script>

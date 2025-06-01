@@ -10,7 +10,6 @@ let opts = {
     secretOrKey: env.jwt_secret_key
 }
 
-console.log("JWT Secret:", env.jwt_secret_key);
 
 passport.use(new JWTStrategy(opts, function(jwtPayLoad, done){
     User.findById(jwtPayLoad._id)

@@ -5,6 +5,7 @@ const Token = require('../models/token');
 const crypto = require('crypto');
 const User = require('../models/user');
 const mongoose = require('mongoose');
+const { ContentAndApprovalsListInstance } = require("twilio/lib/rest/content/v1/contentAndApprovals");
 
 
 function formattedDateTime(){
@@ -138,6 +139,7 @@ module.exports.addFriend = async function(request , response){
                 let token  = await Token.create({
                 access_token: randomToken,
                 });    
+                // console.log('token in email:-',token)
                 commentsMailer.addFriendEmail(fromUser ,toUser,token); 
                 token.fromUser = fromUser;   
                 await token.save();
@@ -217,20 +219,15 @@ module.exports.addFriendResponse = async function(request , response){
     }else{   
         try{
 
-        if (!request.query.token) { // Token query parameter missing
-            request.flash('error','cannot perform this action again'); 
-            return response.redirect('/');
-        }
 
         const decodedToken = decodeURIComponent(request.query.token);
-        console.log('decodedToken=',decodedToken)
         const tokenObj = JSON.parse(decodedToken);
         const id = new mongoose.Types.ObjectId(tokenObj._id);
         response.cookie('token_id', tokenObj._id);
-        token = await Token.findById(id);
-        
+        token = await Token.findById(id._id.toString());
+
         if (request.cookies.fromEmail && request.cookies.fromEmail!=request.query.from_user) {
-            response.cookie('fromEmail', request.query.from_user);        
+            response.cookie('fromEmail', request.query.from_user);  
             return response.redirect('/friends/add-friend-response/');  
         }else{
             response.cookie('fromEmail' ,request.query.from_user); 
@@ -238,19 +235,18 @@ module.exports.addFriendResponse = async function(request , response){
         }    
         response.cookie('toEmail' ,request.query.to_user); 
         response.cookie('value' ,request.query.value); 
-        }catch{
+        }catch(error){
+            console.log('error occured',error)
             request.flash('error','cannot perform this action again'); 
             return response.redirect('/');  
         }
     }
-try {                                               
-   
-    
-    if(token==null){                             
-        request.flash('error','cannot perform this action again'); 
-        return response.redirect('/');             
-    }     
 
+try {                                               
+    if(token==null){                   
+        request.flash('error','cannot perform this action again'); 
+        // return response.redirect('/');             
+    }     
 
     if(!request.isAuthenticated()){                            
         request.flash('error','Please Sign-In First');
@@ -258,9 +254,7 @@ try {
     }        
  
     if(request.cookies.fromEmail == undefined){  
-        
         return response.redirect('/friends/add-friend-response/');        
-        
     } 
     let fromUser = await Users.findOne({email:request.cookies.fromEmail});
     let toUser = await Users.findOne({email:request.cookies.toEmail});
@@ -318,38 +312,22 @@ try {
         toUser.countOfNewlyReceivedNotifications += 1;
         fromUser.isAnyNotificationReceived = true;
         fromUser.countOfNewlyReceivedNotifications += 1;
-        toUser.save();
-        fromUser.save();
 
         request.flash('success', fromUser.name ,'is added to your friend list!');    
     }
     else{    
-        
-        
-        
-        
-        
-        await Friendships.deleteOne(friendship)    
-        
-        request.flash('success', 'Friend Request is rejected!');   
-    }
-    
-    
-    
-    
-    const isFriendRequestSent = fromUser.friendship_requests_sent.some(request => request === toUser._id.toString());
-    if (isFriendRequestSent) {
-        fromUser.friendship_requests_sent = fromUser.friendship_requests_sent.filter(request => request !== toUser._id.toString());
-    } else {
-        toUser.friendship_requests_sent = toUser.friendship_requests_sent.filter(request => request !== fromUser._id.toString());
+        if(friendship!=null){
+            await Friendships.deleteOne(friendship);
+            request.flash('success', 'Friend Request is rejected!'); 
+        } 
     }
 
+    fromUser.friendship_requests_sent = fromUser.friendship_requests_sent.filter(request => request !== toUser._id.toString());
+    toUser.friendship_requests_sent = toUser.friendship_requests_sent.filter(request => request !== fromUser._id.toString()); //##
 
-    
     response.clearCookie("fromEmail");
     response.clearCookie("toEmail");
     response.clearCookie("value");
-
 
     let path_to_redirect = '/';
     if(token.fromUser){
@@ -357,22 +335,17 @@ try {
     }
 
     let deletedToken=await Token.deleteOne(token)  
-    
+    toUser.pendingFriendshipRequests.pull(token); //##
 
-    toUser.pendingFriendshipRequests.pull(token); 
     await toUser.save();  
     await fromUser.save();
     
-    return response.redirect(path_to_redirect) ;    
+    return response.redirect(path_to_redirect);
+
     } catch (error) {
-        
-        
-        
-        
         return response.redirect('/');
     }                            
-}      
-
+}
 
 module.exports.closeFriends = async function(request,response){
     

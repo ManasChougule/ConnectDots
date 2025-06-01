@@ -21,7 +21,7 @@ function getWiFiIPv4Address() {
     
     // }
     // return '13.204.64.57';
-    return process.env.WIFI_IP
+    return process.env.WIFI_IP + ':' + process.env.SERVER_PORT
 }
 const http = require('http');
 

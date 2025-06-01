@@ -144,7 +144,14 @@
   background-color: #0056b3;
 }
 
-.post-content{ font-size: 20px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 21.4px; } 
+.post-content {
+    font-size: 18px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 600;
+    line-height: 21.4px;
+    color:#1b74b6 !important;
+}
 
 .my-3{
     margin-top: -2rem !important;
@@ -156,3 +163,8 @@
 }
 
   
+img.img-fluid.rounded {
+    object-fit: contain;
+    max-height: 400px;
+    max-width: 400px;
+}

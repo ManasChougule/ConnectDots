@@ -536,7 +536,7 @@ module.exports.verifyMyEmailAddress = async function(req,res){
     // let str = JSON.parse(req.params.token)._id
     // new_obj=new mongoose.Types.ObjectId(str) 
     // let token = await Token.findById(new_obj._id)
-
+    console.log('in verifyMyEmailAddress')
     // 1. Grab raw param
     let raw = req.params.token;                     // "...%7D&source=gmail&ust=..."
     // 2. Keep only the part before any '&'
@@ -557,9 +557,9 @@ module.exports.verifyMyEmailAddress = async function(req,res){
 
       
     let user = await User.findOne({email: req.params.user_email}).populate('notifications');;
-    if (!user) {
+    if (!user) {    
         req.flash('error', 'Invalid request');
-        return res.redirect('back');
+        return res.redirect('/users/sign-in');
     }
 
     var formattedDateTime2 = formattedDateTime()

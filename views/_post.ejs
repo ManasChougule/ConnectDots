@@ -30,7 +30,7 @@
     <div class="d-flex flex-wrap gap-3 small text-muted">
       <span>Author:&nbsp;<strong><%= post.user.name %></strong></span>
 
-            <% if (locals.user) { %>
+        <% if (locals.user) { %>
             <a class="toggle-like-button like-button <%= post.likes.length === 0 ? 'text-black-50' : '' %>"
                 data-likes="<%= post.likes.length %>"
                 href="/likes/toggle/?id=<%= post._id %>&type=Post"

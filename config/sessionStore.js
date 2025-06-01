@@ -10,7 +10,7 @@ const sessionStore = new MongoStore({
 }, function (err) {
     console.log(err || 'connect-mongodb setup ok');
 });
-console.log("JWT Secret:", env.jwt_secret_key);
+
 const sessionMiddleware = session({
     name: 'ConnectDots',
     secret: env.jwt_secret_key,

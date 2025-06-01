@@ -156,7 +156,7 @@ module.exports.home =  async function(req,res){
             return post;
         });
         return res.render('home' , {   
-            title : 'Home Page', // Connecting People and Ideas, Crafting Stories
+            title : '', // Home Page, Connecting People and Ideas, Crafting Stories 
             posts : posts , 
             chats : messages,
             pageNo : pageNo || 1,

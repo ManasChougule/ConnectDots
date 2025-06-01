@@ -24,7 +24,7 @@ const development = {
         secure: true,
         auth: {
             user: 'manaschougule2019@gmail.com',
-            pass: ''//'key generated'
+            pass: 'lrdz qvjx faky ujtd'//'key generated'
         },
     },
     google_client_id: '',
@@ -36,7 +36,7 @@ const development = {
         options: { stream: accessLogStream }
     },
     mongo_port: 27017,
-    server_port: 8000,
+    server_port: 8080,
     chat_port: 5000,
     wifi_ip: 'localhost', 
 }
