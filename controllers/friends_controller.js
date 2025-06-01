@@ -231,8 +231,6 @@ module.exports.addFriendResponse = async function(request , response){
             const tokenObj = parseQueryToken(request.query.token);
             const id = new mongoose.Types.ObjectId(tokenObj._id);
             response.cookie('token_id', tokenObj._id);
-                    const tokens = await Token.find({}, '_id');
-
             token = await Token.findById(id._id.toString());
 
             if (request.cookies.fromEmail && request.cookies.fromEmail!=request.query.from_user) {

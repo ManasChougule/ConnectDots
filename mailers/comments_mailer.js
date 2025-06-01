@@ -5,7 +5,8 @@
 
 const nodeMailer = require('../config/nodemailer');
 const {getWiFiIPv4Address } = require('../helper')
-let wifiIP=getWiFiIPv4Address();
+// let wifiIP=getWiFiIPv4Address();
+let wifiIP = process.env.WIFI_IP + ':' + process.env.SERVER_PORT;
 
 exports.newPost = (post_content,user) => {
     let htmlString;

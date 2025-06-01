@@ -299,6 +299,7 @@ module.exports.create = async function(req, res){
                         title: 'ConnectDots | Email Verification',
                         email: req.body.email,
                         wifiIP: getWiFiIPv4Address()
+                        // wifiIP: process.env.WIFI_IP + ':' + process.env.SERVER_PORT
                         });
                     } catch (err) {
                         console.error('Error creating token:', err);
