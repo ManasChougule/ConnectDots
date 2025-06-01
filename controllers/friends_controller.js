@@ -7,6 +7,15 @@ const User = require('../models/user');
 const mongoose = require('mongoose');
 const { ContentAndApprovalsListInstance } = require("twilio/lib/rest/content/v1/contentAndApprovals");
 
+function parseQueryToken(raw) {
+  try {
+    // If it already looks like JSON, parse directly
+    return raw.trim().startsWith('{') ? JSON.parse(raw)
+                                      : JSON.parse(decodeURIComponent(raw));
+  } catch (err) {
+    throw new Error('Malformed token query-param');
+  }
+}
 
 function formattedDateTime(){
     const date = new Date(); 
@@ -139,7 +148,7 @@ module.exports.addFriend = async function(request , response){
                 let token  = await Token.create({
                 access_token: randomToken,
                 });    
-                // console.log('token in email:-',token)
+                console.log('token in email:-',token)
                 commentsMailer.addFriendEmail(fromUser ,toUser,token); 
                 token.fromUser = fromUser;   
                 await token.save();
@@ -217,33 +226,34 @@ module.exports.addFriendResponse = async function(request , response){
         token = await Token.findById(new_obj._id)  
         
     }else{   
-        try{
+            try{
+        
+            const tokenObj = parseQueryToken(request.query.token);
+            const id = new mongoose.Types.ObjectId(tokenObj._id);
+            response.cookie('token_id', tokenObj._id);
+                    const tokens = await Token.find({}, '_id');
 
+            token = await Token.findById(id._id.toString());
 
-        const decodedToken = decodeURIComponent(request.query.token);
-        const tokenObj = JSON.parse(decodedToken);
-        const id = new mongoose.Types.ObjectId(tokenObj._id);
-        response.cookie('token_id', tokenObj._id);
-        token = await Token.findById(id._id.toString());
-
-        if (request.cookies.fromEmail && request.cookies.fromEmail!=request.query.from_user) {
-            response.cookie('fromEmail', request.query.from_user);  
-            return response.redirect('/friends/add-friend-response/');  
-        }else{
-            response.cookie('fromEmail' ,request.query.from_user); 
-            
-        }    
-        response.cookie('toEmail' ,request.query.to_user); 
-        response.cookie('value' ,request.query.value); 
-        }catch(error){
-            console.log('error occured',error)
-            request.flash('error','cannot perform this action again'); 
-            return response.redirect('/');  
+            if (request.cookies.fromEmail && request.cookies.fromEmail!=request.query.from_user) {
+                response.cookie('fromEmail', request.query.from_user);    
+                return response.redirect('/friends/add-friend-response/');  
+            }else{
+                response.cookie('fromEmail' ,request.query.from_user); 
+                
+            }    
+            response.cookie('toEmail' ,request.query.to_user); 
+            response.cookie('value' ,request.query.value); 
+            }catch(erro){
+                console.log("token==",token, 'error occured',erro)
+                request.flash('error','..cannot perform this action again'); 
+                return response.redirect('/');  
+            }
         }
-    }
 
 try {                                               
-    if(token==null){                   
+    if(token==null){     
+        console.log('7777 token is null')                  
         request.flash('error','cannot perform this action again'); 
         // return response.redirect('/');             
     }     
@@ -255,6 +265,7 @@ try {
  
     if(request.cookies.fromEmail == undefined){  
         return response.redirect('/friends/add-friend-response/');        
+        
     } 
     let fromUser = await Users.findOne({email:request.cookies.fromEmail});
     let toUser = await Users.findOne({email:request.cookies.toEmail});
