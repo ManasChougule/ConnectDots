@@ -28,7 +28,13 @@
     <p class="mb-1 mt-2 post-content"><%= post.content %></p>
 
     <div class="d-flex flex-wrap gap-3 small text-muted">
-      <span>Author:&nbsp;<strong><%= post.user.name %></strong></span>
+      <!-- <span>Author:&nbsp;<strong><%= post.user.name %></strong></span> -->
+
+        <span style="font-weight: 600;">Author&nbsp:</span>
+        <a href="/users/profile/<%= post.user.id %>" 
+            class="text-decoration-none  rounded-4" style="font-weight: 600;margin-left: -0.5rem;">
+            <span><strong></strong><%= post.user.name %></strong></span>
+        </a>
 
         <% if (locals.user) { %>
             <a class="toggle-like-button like-button <%= post.likes.length === 0 ? 'text-black-50' : '' %>"

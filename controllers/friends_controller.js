@@ -224,7 +224,7 @@ module.exports.addFriendResponse = async function(request , response){
         
         new_obj=new mongoose.Types.ObjectId(request.cookies.token_id)
         token = await Token.findById(new_obj._id)  
-        
+        console.log('11 token',token);
     }else{   
             try{
         
@@ -232,7 +232,7 @@ module.exports.addFriendResponse = async function(request , response){
             const id = new mongoose.Types.ObjectId(tokenObj._id);
             response.cookie('token_id', tokenObj._id);
             token = await Token.findById(id._id.toString());
-
+            console.log('12 token',token);
             if (request.cookies.fromEmail && request.cookies.fromEmail!=request.query.from_user) {
                 response.cookie('fromEmail', request.query.from_user);    
                 return response.redirect('/friends/add-friend-response/');  

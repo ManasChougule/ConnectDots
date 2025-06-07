@@ -36,7 +36,8 @@
                 contentType: 'application/json',
                 success: function (data) {
                     if (data.data) {
-                        let newPost = newPostDom(data.data.post, data.data.user.name);
+                        console.log("&&**&&",data.data.user)
+                        let newPost = newPostDom(data.data.post, data.data.user.name,data.data.user.id);
                         $('#posts-list-container>ul').prepend(newPost);
                         deletePost($('.delete-post-button', newPost));
                         new PostComments(data.data.post._id);  // ← invoking comment constructor(AJAX submit handler) for freshly-added posts to dynamically add comment on this post & to dynamically delete comments on this new post
@@ -64,11 +65,12 @@
     }
 
     // Make these globally accessible
-    let newPostDom = function (post, user_name) {
+    let newPostDom = function (post, user_name,user_id) {
         if (post.imageFileName) {
             post.imageUrl = `/images/fetchImage/${post.imageFileName}`;
         }
 
+        console.log("post======",post);
         return $(`
             <li id="post-${post._id}" class="post-wrapper list-group-item border rounded p-3 mb-3">
 
@@ -89,7 +91,12 @@
                 <p class="mb-1 post-content">${post.content}</p>
 
                 <div class="d-flex flex-wrap gap-3 small text-muted">
-                <span>Author:&nbsp;<strong>${user_name}</strong></span>
+
+                <span style="font-weight: 600;">Author&nbsp:</span>
+                <a href="/users/profile/${user_id}" 
+                    class="text-decoration-none  rounded-4" style="font-weight: 600;margin-left: -0.5rem;">
+                    <span><strong></strong>${user_name}</strong></span>
+                </a>
 
                 <a class="toggle-like-button like-button text-black-50"
                     data-likes="0"

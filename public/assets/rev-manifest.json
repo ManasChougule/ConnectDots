@@ -5,10 +5,10 @@
   "css/home.css": "css/home-94e603ea3b.css",
   "css/layout.css": "css/layout-fdbe9da10c.css",
   "css/sign_up.css": "css/sign_up-2c0bc536e2.css",
-  "css/user_profile.css": "css/user_profile-d573cf3aea.css",
+  "css/user_profile.css": "css/user_profile-a471b4d007.css",
   "js/chat_engine.js": "js/chat_engine-4e2b908bc9.js",
   "js/home_post_comments.js": "js/home_post_comments-cbcaee3428.js",
-  "js/home_posts.js": "js/home_posts-91218bbd8e.js",
+  "js/home_posts.js": "js/home_posts-2b44aa423f.js",
   "js/toggle_friend.js": "js/toggle_friend-f8449b65e8.js",
   "js/toggle_likes.js": "js/toggle_likes-50f5cbbaf5.js"
 }

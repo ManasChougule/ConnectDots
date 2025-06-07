@@ -55,17 +55,12 @@ h1 {
   padding: 5px 10px;
 }
 
-/** some additional styles added cause post is not properly visible due to some conflicting css */
 p.mb-1.post-content {
     margin: auto;
     margin-top : -1rem;
 }
 
-p.mb-1 {
-    margin-left: 50%;
-}
 
 .small.text-muted.fst-italic {
     color:#7f7f7f !important;
-    margin-left: 48%;
 }

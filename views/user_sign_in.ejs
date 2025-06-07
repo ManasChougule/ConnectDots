@@ -36,7 +36,7 @@
         
         var email = document.getElementById('email').value;
         var emailSpan = document.getElementById('emailSpan');
-        var emailPattern = /^[a-zA-Z0-9]+@gmail.com$/;
+        var emailPattern = /^[a-zA-Z0-9._]+@gmail\.com$/;
         if (email.length > 50) {
             document.getElementById('email').value = '';  
             emailSpan.innerText = 'Email is too long. Please use a shorter email address.'
