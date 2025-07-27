@@ -66,10 +66,12 @@ const production = {
     twilio_sid: process.env.TWILIO_ACCOUNT_SID,
     twilio_auth_token: process.env.TWILIO_AUTH_TOKEN,
     twilio_phone_number: process.env.TWILIO_PHONE_NUMBER,
-    mongo_port: process.env.CONNECT_DOTS_MONGO_PORT,
-    server_port: process.env.SERVER_PORT,
+    mongo_port: process.env.CONNECT_DOTS_MONGO_PORT, 
+	server_port: process.env.SERVER_PORT,
+//    server_port: 80,
     chat_port: process.env.CHAT_PORT,
-    wifi_ip: process.env.WIFI_IP
+    //wifi_ip: process.env.WIFI_IP
+	wifi_ip: "connectdots.fun"
 }
 
 module.exports = process.env.CONNECT_DOTS_ENVIRONMENT == "development" ? development : production;

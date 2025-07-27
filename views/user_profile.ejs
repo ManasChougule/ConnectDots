@@ -239,7 +239,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const input = document.getElementById('avatarInput');
             const fileNameDisplay = document.getElementById('selectedFileName');
-
+	    if (input && fileNameDisplay) {
             input.addEventListener('change', function () {
                 if (input.files.length > 0) {
                     fileNameDisplay.textContent = input.files[0].name;
@@ -247,6 +247,7 @@
                     fileNameDisplay.textContent = '';
                 }
             });
+	    }
         });
   </script>
 

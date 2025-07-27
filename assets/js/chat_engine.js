@@ -3,16 +3,24 @@
 class ChatEngine {
 
     constructor(chatBoxId, userEmail,toUser) {
-        const {hostname} = window.location;
+        const {hostname, protocol} = window.location;
         // const hostname = '13.204.64.57';
         const port = 5000;
         this.chatBox = $(`#${chatBoxId}`),
         this.userEmail = userEmail,
         this.to_user=toUser,
-        this.socket = io.connect(`http://${hostname}:${port}`, { // http://43.205.209.122:5000
-            transports: ['polling'] ,
-        });
-        console.info(`Websoket listing on http://${hostname}:${port}`);
+        //this.socket = io.connect(`http://${hostname}:${port}`, { // http://43.205.209.122:5000
+        //    transports: ['polling'] ,
+        //});
+	//this.socket = io.connect(`${protocol}//${hostname}`, { 
+        //    transports: ['polling'] ,
+        //});
+	this.socket = io(`${protocol}//${hostname}`, { // missing port is okay cause nginx is reverse proxing to 127.0.0.1:5000
+    		path: "/socket.io",
+    		transports: ['websocket', 'polling'],  
+    		withCredentials: true
+	});
+        console.info(`Websocket listing on ${protocol}//${hostname}`);
 
         if (this.userEmail) {
             this.fetchPreviousMessages();
@@ -85,8 +93,13 @@ class ChatEngine {
 
     
     displayMessage(data) {
+	if (!data || typeof data !== 'object') {
+        	//console.warn("displayMessage was called with invalid data:", data);
+        	return;
+    	}
+
         const isSelf = data.user_email === this.userEmail;
-        const messageText = data.message;
+        const messageText = data?.message || "";
         const lines = this.splitMessage(messageText, 10);  // Your custom line splitter
 
         // Create message container <li> with Bootstrap classes
@@ -127,7 +140,7 @@ class ChatEngine {
     connectionHandler() {
         let self = this;
         this.socket.on('connect', function() {
-            console.log('connection established using sockets...!' , self.userEmail && self.to_user==null , self.to_user==null , self.userEmail,self.to_user);
+            console.log('connection established using sockets...!');
             if (self.userEmail && self.to_user==null) {  
                 
                 self.socket.emit('join_room', {

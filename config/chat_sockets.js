@@ -5,7 +5,7 @@ const Message = require('../models/message');
 const userSockets = {};  
 
 module.exports.chatSockets = function(socketServer) {
-    const io = require('socket.io')(socketServer, {    
+    /*const io = require('socket.io')(socketServer, {    
         // cors: {
         //     origin: 'http://13.204.64.57', // this will make request to 5000 port
         //     methods: ["GET", "POST"],
@@ -15,7 +15,17 @@ module.exports.chatSockets = function(socketServer) {
         cors: {
             origin: '*'
         }
+    });*/
+
+    const io = require('socket.io')(socketServer, {
+    	cors: {
+        	origin: 'https://connectdots.fun',  
+        	methods: ["GET", "POST"],
+        	credentials: true
+    	},
+    	path: "/socket.io" // VERY IMPORTANT when using reverse proxy like Nginx
     });
+
 
     io.on('connection', function(socket) {
         socket.on('disconnect', function() {
