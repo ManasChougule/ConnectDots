@@ -1,7 +1,6 @@
 <div>
 
-    <h1>I want to connect</h1>
-    <p>Hi <%=to_user.name%> ! , <%=from_user.name%> wants to connect with you.</p>  
+    <h3>Hi <%=to_user.name%> ! <%=from_user.name%> wants to connect with you.</h3>  
     <br>
     <a href="http://<%=wifiIP%>/friends/add-friend-response/?from_user=<%=from_user%>&to_user=<%=to_user%>&value=<%=true%>&token=<%=encodeURIComponent(JSON.stringify(token))%>">Accept</a>
     <br>

@@ -70,7 +70,6 @@ exports.newComment = (comment_content , object) => {
 
 exports.resetPasswordEmail = (user,token) => {
     user = {email: user.email ,name: user.name}; 
-    console.log("wifiIP",wifiIP)
     let htmlString = nodeMailer.renderTemplate({user: user,token:token,wifiIP:wifiIP}, '/passwords/reset_password_email.ejs');
     nodeMailer.transporter.sendMail({
        from: 'manaschougule2019@gmail.com',

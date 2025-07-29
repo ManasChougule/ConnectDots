@@ -36,7 +36,6 @@
                 contentType: 'application/json',
                 success: function (data) {
                     if (data.data) {
-                        console.log("&&**&&",data.data.user)
                         let newPost = newPostDom(data.data.post, data.data.user.name,data.data.user.id);
                         $('#posts-list-container>ul').prepend(newPost);
                         deletePost($('.delete-post-button', newPost));

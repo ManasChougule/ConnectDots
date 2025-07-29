@@ -74,4 +74,6 @@ const production = {
 	wifi_ip: "connectdots.fun"
 }
 
+
+
 module.exports = process.env.CONNECT_DOTS_ENVIRONMENT == "development" ? development : production;
