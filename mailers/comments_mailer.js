@@ -1,9 +1,7 @@
 const nodeMailer = require('../config/nodemailer');
-const {getWiFiIPv4Address } = require('../helper');
+// const {getWiFiIPv4Address } = require('../helper');
 const env = require('../config/environment');
-// let wifiIP=getWiFiIPv4Address();
-//let wifiIP = process.env.WIFI_IP + ':' + process.env.SERVER_PORT;
-let wifiIP = env.wifi_ip;
+let baseUrl = env.base_url;
 
 exports.newPost = (post_content,user) => {
     let htmlString;
@@ -70,7 +68,7 @@ exports.newComment = (comment_content , object) => {
 
 exports.resetPasswordEmail = (user,token) => {
     user = {email: user.email ,name: user.name}; 
-    let htmlString = nodeMailer.renderTemplate({user: user,token:token,wifiIP:wifiIP}, '/passwords/reset_password_email.ejs');
+    let htmlString = nodeMailer.renderTemplate({user: user,token:token,baseUrl:baseUrl}, '/passwords/reset_password_email.ejs');
     nodeMailer.transporter.sendMail({
        from: 'manaschougule2019@gmail.com',
        to: user.email,        
@@ -110,7 +108,7 @@ exports.addFriendEmail = (from_user , to_user , token)=>{
         toString: function () {     
             return `${this.email}`;
           },};    
-    let htmlString = nodeMailer.renderTemplate({from_user: from_user , to_user: to_user ,token:token,wifiIP:wifiIP}, '/friends/add_friend_email.ejs');
+    let htmlString = nodeMailer.renderTemplate({from_user: from_user , to_user: to_user ,token:token,baseUrl:baseUrl}, '/friends/add_friend_email.ejs');
     nodeMailer.transporter.sendMail({
         from: from_user.email, 
         to: to_user.email,        
@@ -127,7 +125,7 @@ exports.addFriendEmail = (from_user , to_user , token)=>{
 
 exports.verifyEmailAddress = (user,token) => { 
     var user = {email: user.email ,name: user.name}; 
-    let htmlString = nodeMailer.renderTemplate({user:user, token:token,wifiIP:wifiIP}, '/emails/verify_email_address.ejs');
+    let htmlString = nodeMailer.renderTemplate({user:user, token:token,baseUrl:baseUrl}, '/emails/verify_email_address.ejs');
     nodeMailer.transporter.sendMail({
        from: 'manaschougule2019@gmail.com',
        to: user.email,        
@@ -144,7 +142,7 @@ exports.verifyEmailAddress = (user,token) => {
 
 exports.accountActivated = (user) => { 
     var user = {email: user.email ,name: user.name}; 
-    let htmlString = nodeMailer.renderTemplate({user:user,wifiIP:wifiIP}, '/emails/email_verified_successfully.ejs');
+    let htmlString = nodeMailer.renderTemplate({user:user,baseUrl:baseUrl}, '/emails/email_verified_successfully.ejs');
     nodeMailer.transporter.sendMail({
     from: 'manaschougule2019@gmail.com',
     to: user.email,        

@@ -15,7 +15,7 @@ module.exports.uploadImage = async function (req, res) {
     });
   } catch (error) {
     res.status(500).json({
-      message: '4444Failed to upload image',
+      message: 'Failed to upload image',
       error: error.message
     });
   }

@@ -298,8 +298,7 @@ module.exports.create = async function(req, res){
                         return res.render('verification_email_delievered', {
                         title: 'ConnectDots | Email Verification',
                         email: req.body.email,
-                        wifiIP: getWiFiIPv4Address()
-                        // wifiIP: process.env.WIFI_IP + ':' + process.env.SERVER_PORT
+                        baseUrl: getWiFiIPv4Address()
                         });
                     } catch (err) {
                         console.error('Error creating token:', err);
@@ -338,7 +337,7 @@ module.exports.createSession = async function(req,res,next){
     }        
 
     const token = jwt.sign({ userId: req.user.id }, env.jwt_secret_key, { expiresIn: '6h' });
-    res.cookie('authToken', token, { httpOnly: true, secure: false });    // for production :- true & ensure server is running on https
+    res.cookie('authToken', token, { httpOnly: true, secure: process.env.CONNECT_DOTS_ENVIRONMENT === 'production' });    // for production :- true & ensure server is running on https
 
     if(req.cookies.fromEmail && req.cookies.toEmail == req.body.email){  
         return res.redirect('/friends/add-friend-response/');   

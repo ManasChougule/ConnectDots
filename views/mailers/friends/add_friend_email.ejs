@@ -2,10 +2,10 @@
 
     <h3>Hi <%=to_user.name%> ! <%=from_user.name%> wants to connect with you.</h3>  
     <br>
-    <a href="http://<%=wifiIP%>/friends/add-friend-response/?from_user=<%=from_user%>&to_user=<%=to_user%>&value=<%=true%>&token=<%=encodeURIComponent(JSON.stringify(token))%>">Accept</a>
+    <a href="<%=baseUrl%>/friends/add-friend-response/?from_user=<%=from_user%>&to_user=<%=to_user%>&value=<%=true%>&token=<%=encodeURIComponent(JSON.stringify(token))%>">Accept</a>
     <br>
     <br>
-    <a href="http://<%=wifiIP%>/friends/add-friend-response/?from_user=<%=from_user%>&to_user=<%=to_user%>&value=<%=false%>&token=<%=encodeURIComponent(JSON.stringify(token))%>">Reject</a>
+    <a href="<%=baseUrl%>/friends/add-friend-response/?from_user=<%=from_user%>&to_user=<%=to_user%>&value=<%=false%>&token=<%=encodeURIComponent(JSON.stringify(token))%>">Reject</a>
     <br>
     <br>
     <p>...Thanks!</p> 

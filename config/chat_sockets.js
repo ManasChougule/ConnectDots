@@ -3,23 +3,23 @@ const express = require('express');
 const router = express.Router();
 const Message = require('../models/message');
 const userSockets = {};  
-
+const env = require('./environment');
 module.exports.chatSockets = function(socketServer) {
-    /*const io = require('socket.io')(socketServer, {    
-        // cors: {
-        //     origin: 'http://13.204.64.57', // this will make request to 5000 port
-        //     methods: ["GET", "POST"],
-        //     allowedHeaders: ['Content-Type'],
-        //     credentials: true
-        // }
-        cors: {
-            origin: '*'
-        }
-    });*/
+    // const io = require('socket.io')(socketServer, {    
+    //     // cors: {
+    //     //     origin: 'http://13.204.64.57', // this will make request to 5000 port
+    //     //     methods: ["GET", "POST"],
+    //     //     allowedHeaders: ['Content-Type'],
+    //     //     credentials: true
+    //     // }
+    //     cors: {
+    //         origin: '*'
+    //     }
+    // });
 
     const io = require('socket.io')(socketServer, {
     	cors: {
-        	origin: 'https://connectdots.fun',  
+        	origin: env.base_url,   
         	methods: ["GET", "POST"],
         	credentials: true
     	},

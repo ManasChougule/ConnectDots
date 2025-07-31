@@ -24,12 +24,12 @@ const development = {
         secure: true,
         auth: {
             user: 'manaschougule2019@gmail.com',
-            pass: 'lrdz qvjx faky ujtd'//'key generated'
+            pass: ''
         },
     },
-    google_client_id: '',
-    google_client_secret: '',
-    google_callback_url: "",
+    google_client_id: process.env.CONNECT_DOTS_GOOGLE_CLIENT_ID,
+    google_client_secret: process.env.CONNECT_DOTS_GOOGLE_CLIENT_SECRET,
+    google_callback_url: process.env.CONNECT_DOTS_GOOGLE_CALLBACK_URL,
     jwt_secret_key: 'connectdots_jwt_secret',
     morgan: {
         mode: 'combined',
@@ -38,7 +38,8 @@ const development = {
     mongo_port: 27017,
     server_port: 8080,
     chat_port: 5000,
-    wifi_ip: 'localhost', 
+    base_url: 'http://localhost:8080', 
+    sender_email:''
 }
 
 
@@ -58,6 +59,9 @@ const production = {
             pass: process.env.CONNECT_DOTS_GMAIL_PASSWORD
         },
     },
+    google_client_id: process.env.CONNECT_DOTS_GOOGLE_CLIENT_ID,
+    google_client_secret: process.env.CONNECT_DOTS_GOOGLE_CLIENT_SECRET,
+    google_callback_url: process.env.CONNECT_DOTS_GOOGLE_CALLBACK_URL,
     jwt_secret_key: process.env.CONNECT_DOTS_JWT_SECRET,
     morgan: {
         mode: 'combined',
@@ -68,10 +72,9 @@ const production = {
     twilio_phone_number: process.env.TWILIO_PHONE_NUMBER,
     mongo_port: process.env.CONNECT_DOTS_MONGO_PORT, 
 	server_port: process.env.SERVER_PORT,
-//    server_port: 80,
     chat_port: process.env.CHAT_PORT,
-    //wifi_ip: process.env.WIFI_IP
-	wifi_ip: "connectdots.fun"
+	base_url: process.env.BASE_URL,
+    sender_email:process.env.SENDER_EMAIL
 }
 
 
