@@ -71,10 +71,9 @@ const production = {
     twilio_auth_token: process.env.TWILIO_AUTH_TOKEN,
     twilio_phone_number: process.env.TWILIO_PHONE_NUMBER,
     mongo_port: process.env.CONNECT_DOTS_MONGO_PORT, 
-	server_port: process.env.SERVER_PORT,
+    server_port: process.env.SERVER_PORT,
     chat_port: process.env.CHAT_PORT,
-	base_url: process.env.BASE_URL,
-    sender_email:process.env.SENDER_EMAIL
+    base_url: process.env.BASE_URL,
 }
 
 

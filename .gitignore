@@ -5,3 +5,4 @@ production_logs/access.logs
 uploads/users/avatars/
 uploads/posts/
 production_logs
+ecosystem.config.js

@@ -2,6 +2,7 @@ const nodeMailer = require('../config/nodemailer');
 // const {getWiFiIPv4Address } = require('../helper');
 const env = require('../config/environment');
 let baseUrl = env.base_url;
+const senderEmail = env.smtp.auth.user;
 
 exports.newPost = (post_content,user) => {
     let htmlString;
@@ -10,7 +11,7 @@ exports.newPost = (post_content,user) => {
     sub = "🎉 Congratulations! Your new post is now published and visible to the ConnectDots community. 😊!"
 
     nodeMailer.transporter.sendMail({ 
-        from: 'manaschougule2019@gmail.com',
+        from: senderEmail,
         to: user.email ,   
         subject: sub,
         html: htmlString
@@ -30,7 +31,7 @@ exports.newPostFromMyCloseFriend = (me,post_content,my_close_friend) => {
     sub = "Your Close Friend just made a post, please have a look. 😊!"
 
     nodeMailer.transporter.sendMail({ 
-        from: 'manaschougule2019@gmail.com',
+        from: senderEmail,
         to: my_close_friend.email ,   
         subject: sub,
         html: htmlString
@@ -54,7 +55,7 @@ exports.newComment = (comment_content , object) => {
     }
 
     nodeMailer.transporter.sendMail({ 
-        from: 'manaschougule2019@gmail.com',
+        from: senderEmail,
         to: object.user.email ,   
         subject: sub,
         html: htmlString
@@ -70,7 +71,7 @@ exports.resetPasswordEmail = (user,token) => {
     user = {email: user.email ,name: user.name}; 
     let htmlString = nodeMailer.renderTemplate({user: user,token:token,baseUrl:baseUrl}, '/passwords/reset_password_email.ejs');
     nodeMailer.transporter.sendMail({
-       from: 'manaschougule2019@gmail.com',
+       from: senderEmail,
        to: user.email,        
        subject:"Please reset your password",
         html: htmlString
@@ -86,7 +87,7 @@ exports.passwordResetSuccessfullyEmail = (user) => {
     var user = {email: user.email ,name: user.name}; 
     let htmlString = nodeMailer.renderTemplate({user: user}, '/passwords/reset_password_successfully_email.ejs');
     nodeMailer.transporter.sendMail({
-       from: 'manaschougule2019@gmail.com',
+       from: senderEmail,
        to: user.email,        
        subject:"Your password was reset",
         html: htmlString
@@ -127,7 +128,7 @@ exports.verifyEmailAddress = (user,token) => {
     var user = {email: user.email ,name: user.name}; 
     let htmlString = nodeMailer.renderTemplate({user:user, token:token,baseUrl:baseUrl}, '/emails/verify_email_address.ejs');
     nodeMailer.transporter.sendMail({
-       from: 'manaschougule2019@gmail.com',
+       from: senderEmail,
        to: user.email,        
        subject:"ConnectDots -Email Verification",
         html: htmlString
@@ -144,7 +145,7 @@ exports.accountActivated = (user) => {
     var user = {email: user.email ,name: user.name}; 
     let htmlString = nodeMailer.renderTemplate({user:user,baseUrl:baseUrl}, '/emails/email_verified_successfully.ejs');
     nodeMailer.transporter.sendMail({
-    from: 'manaschougule2019@gmail.com',
+    from: senderEmail,
     to: user.email,        
     subject:"ConnectDots - Account Activated",
         html: htmlString
