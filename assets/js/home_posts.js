@@ -69,7 +69,6 @@
             post.imageUrl = `/images/fetchImage/${post.imageFileName}`;
         }
 
-        console.log("post======",post);
         return $(`
             <li id="post-${post._id}" class="post-wrapper list-group-item border rounded p-3 mb-3">
 
