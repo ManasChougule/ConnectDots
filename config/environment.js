@@ -58,7 +58,7 @@ const production = {
             user: process.env.CONNECT_DOTS_GMAIL_USERNAME,
             pass: process.env.CONNECT_DOTS_GMAIL_PASSWORD
         },
-    },
+    }, 
     google_client_id: process.env.CONNECT_DOTS_GOOGLE_CLIENT_ID,
     google_client_secret: process.env.CONNECT_DOTS_GOOGLE_CLIENT_SECRET,
     google_callback_url: process.env.CONNECT_DOTS_GOOGLE_CALLBACK_URL,

@@ -2,7 +2,7 @@ const express = require('express');
 const { route } = require('./routes');
 const app = express();
 const CORS = require('cors');
-// const port = 8000;
+
 app.use(CORS({
     origin: '*'
 }));
@@ -41,7 +41,6 @@ app.use(cookieParser());
 // setup the chat server to be used with socket.io
 const chatServer = require('http').Server(app);
 const chatSockets = require('./config/chat_sockets').chatSockets(chatServer);
-//chatServer.listen(5000);
 
 
 //using static files & environment
@@ -68,7 +67,6 @@ app.set('views', './views');
 //using express layouts
 const expressLayouts = require('express-ejs-layouts');
 app.use(expressLayouts);
-
 
 
 app.use(sessionMiddleware);
